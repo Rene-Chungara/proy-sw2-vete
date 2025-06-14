@@ -33,7 +33,7 @@
 
         <div class="overflow-x-auto bg-white rounded-xl shadow-sm">
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+                <thead class="bg-gray-50 hidden md:table-header-group">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-xl">ID</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
@@ -43,37 +43,52 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($users as $user)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->email }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                            <!-- Enlace directo para editar usuario -->
-                            <a href="{{ route('users.edit', $user) }}" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 inline-flex items-center" title="Editar Usuario">
-                                <!-- Icono de Editar mejorado -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
-                                    <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                                </svg>
-                                Editar
-                            </a>
-                            <!-- Botón para eliminar usuario (mantiene modal de confirmación) -->
-                            <button
-                                @click="showDeleteConfirmModal = true; deleteFormAction = '{{ route('users.destroy', $user) }}'"
-                                class="text-red-600 hover:text-red-900 transition-colors duration-200 inline-flex items-center"
-                                title="Eliminar Usuario"
-                            >
-                                <!-- Icono de Eliminar mejorado -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
-                                    <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                                </svg>
-                                Eliminar
-                            </button>
-                        </td>
-                    </tr>
+                        <tr class="hidden md:table-row">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                                <a href="{{ route('users.edit', $user) }}" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 inline-flex items-center" title="Editar Usuario">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                    Editar
+                                </a>
+                                <button
+                                    @click="showDeleteConfirmModal = true; deleteFormAction = '{{ route('users.destroy', $user) }}'"
+                                    class="text-red-600 hover:text-red-900 transition-colors duration-200 inline-flex items-center"
+                                    title="Eliminar Usuario">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="block md:hidden border-b border-gray-200">
+                            <td class="px-4 py-4 block">
+                                <div class="flex items-center justify-between">
+                                    <div class="font-bold text-gray-800">{{ $user->name }}</div>
+                                    <div class="text-sm text-gray-500">ID: {{ $user->id }}</div>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-2">{{ $user->email }}</div>
+                                <div class="mt-4 flex justify-end space-x-3">
+                                    <a href="{{ route('users.edit', $user) }}" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 inline-flex items-center" title="Editar Usuario">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        Editar
+                                    </a>
+                                    <button
+                                        @click="showDeleteConfirmModal = true; deleteFormAction = '{{ route('users.destroy', $user) }}'"
+                                        class="text-red-600 hover:text-red-900 transition-colors duration-200 inline-flex items-center"
+                                        title="Eliminar Usuario">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
                     @empty
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500" colspan="4">No hay usuarios registrados.</td>
-                    </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500" colspan="4">No hay usuarios registrados.</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -110,6 +125,7 @@
                 <button type="button" @click="showDeleteConfirmModal = false" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-xl transition duration-200">
                     Cancelar
                 </button>
+                {{-- CÓDIGO CORRECTO Y SIMPLIFICADO --}}
                 <form :action="deleteFormAction" method="POST" class="inline-block">
                     @csrf
                     @method('DELETE')
@@ -121,5 +137,4 @@
         </div>
     </div>
 </div>
-
 @endsection
