@@ -42,6 +42,20 @@
                     </svg>
                     Usuarios
                 </a>
+                <a href="{{ route('roles.index') ?? '#' }}" class="block p-3 rounded-xl hover:bg-blue-600 focus:bg-blue-600 focus:outline-none transition-colors duration-200 flex items-center">
+                    <!-- Usuarios Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 17.25a.75.75 0 0 1 .75-1.5h15.75a.75.75 0 0 1 .75.75v.75c0 1.95-1.571 3.525-3.513 3.593L15 21a2.25 2.25 0 0 1-4.5 0v-.087a3.525 3.525 0 0 0-1.053-.294 3.525 3.525 0 0 0-1.053.294v.087a2.25 2.25 0 0 1-4.5 0v-.087c-.93-.067-1.838-.283-2.652-.636A4.52 4.52 0 0 1 .75 19.5v-.75Zm0-1.5H2.25V19.5c0 .414.336.75.75.75h.396a.75.75 0 0 1-.001-1.5Z" clip-rule="evenodd" />
+                    </svg>
+                    Roles
+                </a>
+                <a href="{{ route('empleados.index') ?? '#' }}" class="block p-3 rounded-xl hover:bg-blue-600 focus:bg-blue-600 focus:outline-none transition-colors duration-200 flex items-center">
+                    <!-- Usuarios Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 17.25a.75.75 0 0 1 .75-1.5h15.75a.75.75 0 0 1 .75.75v.75c0 1.95-1.571 3.525-3.513 3.593L15 21a2.25 2.25 0 0 1-4.5 0v-.087a3.525 3.525 0 0 0-1.053-.294 3.525 3.525 0 0 0-1.053.294v.087a2.25 2.25 0 0 1-4.5 0v-.087c-.93-.067-1.838-.283-2.652-.636A4.52 4.52 0 0 1 .75 19.5v-.75Zm0-1.5H2.25V19.5c0 .414.336.75.75.75h.396a.75.75 0 0 1-.001-1.5Z" clip-rule="evenodd" />
+                    </svg>
+                    Empleados
+                </a>
                 <!-- Add more navigation items here -->
             </nav>
             <div class="p-6 border-t border-blue-600 mt-auto">

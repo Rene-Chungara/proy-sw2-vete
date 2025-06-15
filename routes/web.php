@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\EmpleadoController;
 
 
 /*
@@ -25,12 +27,15 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::resource('users', UserController::class)->middleware('auth');
 Route::post('/logout', function() {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     return redirect('/login'); 
 })->name('logout');
+
+Route::resource('users', UserController::class)->middleware('auth');
+Route::resource('roles', RoleController::class)->middleware('auth');
+Route::resource('empleados', EmpleadoController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';

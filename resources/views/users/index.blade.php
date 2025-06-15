@@ -47,6 +47,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->id }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"> {{ $user->getRoleNames()->first() ?? 'Sin rol' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
                                 <a href="{{ route('users.edit', $user) }}" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 inline-flex items-center" title="Editar Usuario">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
