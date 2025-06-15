@@ -6,6 +6,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\TipoPagoController;
+
+
 
 
 /*
@@ -39,11 +44,19 @@ Route::post('/logout', function() {
 Route::resource('users', UserController::class)->middleware('auth');
 Route::resource('roles', RoleController::class)->middleware('auth');
 Route::resource('empleados', EmpleadoController::class)->middleware('auth');
-Route::resource('almacenes', AlmacenController::class)->parameters([
+Route::resource('almacenes', AlmacenController::class)->middleware('auth')->parameters([
     'almacenes' => 'almacen'
 ]);
 Route::resource('categorias', CategoriaController::class)->middleware('auth');
-
+Route::resource('proveedores', ProveedorController::class)->middleware('auth')->parameters([
+    'proveedores' => 'proveedor'
+]);
+Route::resource('clientes', ClienteController::class)->middleware('auth')->parameters([
+    'clientes' => 'cliente'
+]);
+Route::resource('tipo_pagos', TipoPagoController::class)->middleware('auth')->parameters([
+    'tipo_pagos' => 'tipo_pago'
+]);
 
 
 require __DIR__.'/auth.php';
