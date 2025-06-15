@@ -9,7 +9,9 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\TipoPagoController;
-
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\NotaEntradaController;
+use App\Http\Controllers\NotaSalidaController;
 
 
 
@@ -56,6 +58,14 @@ Route::resource('clientes', ClienteController::class)->middleware('auth')->param
 ]);
 Route::resource('tipo_pagos', TipoPagoController::class)->middleware('auth')->parameters([
     'tipo_pagos' => 'tipo_pago'
+]);
+Route::resource('productos', ProductoController::class)->middleware('auth');
+Route::resource('nota_entradas', NotaEntradaController::class)->middleware('auth')->parameters([
+    'nota_entradas' => 'nota_entrada'
+]);
+
+Route::resource('nota_salidas', NotaSalidaController::class)->middleware('auth')->parameters([
+    'nota_salidas' => 'nota_salida'
 ]);
 
 
