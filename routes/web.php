@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\CategoriaController;
 
 
 /*
@@ -37,5 +39,11 @@ Route::post('/logout', function() {
 Route::resource('users', UserController::class)->middleware('auth');
 Route::resource('roles', RoleController::class)->middleware('auth');
 Route::resource('empleados', EmpleadoController::class)->middleware('auth');
+Route::resource('almacenes', AlmacenController::class)->parameters([
+    'almacenes' => 'almacen'
+]);
+Route::resource('categorias', CategoriaController::class)->middleware('auth');
+
+
 
 require __DIR__.'/auth.php';
