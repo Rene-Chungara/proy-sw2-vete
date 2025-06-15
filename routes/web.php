@@ -12,6 +12,7 @@ use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\NotaEntradaController;
 use App\Http\Controllers\NotaSalidaController;
+use App\Http\Controllers\NotaVentaController;
 
 
 
@@ -63,10 +64,11 @@ Route::resource('productos', ProductoController::class)->middleware('auth');
 Route::resource('nota_entradas', NotaEntradaController::class)->middleware('auth')->parameters([
     'nota_entradas' => 'nota_entrada'
 ]);
-
 Route::resource('nota_salidas', NotaSalidaController::class)->middleware('auth')->parameters([
     'nota_salidas' => 'nota_salida'
 ]);
-
+Route::resource('nota_ventas', NotaVentaController::class)->middleware('auth')->parameters([
+    'nota_ventas' => 'nota_venta'
+]);
 
 require __DIR__.'/auth.php';

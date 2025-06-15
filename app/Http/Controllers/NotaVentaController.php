@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NotaSalida;
-use App\Models\DetalleNotaSalida;
-use App\Models\Proveedor;
+use App\Models\NotaVenta;
+use App\Models\DetalleVenta;
+use App\Models\Cliente;
 use App\Models\Producto;
+use App\Models\TipoPago;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class NotaSalidaController extends Controller
+class NotaVentaController extends Controller
 {
     public function index()
     {
-        $nota_salidas = NotaSalida::with('proveedor')->paginate(10);
-        return view('nota_salidas.index', compact('nota_salidas'));
+        $nota_ventas = NotaVenta::with('cliente', 'usuario', 'tipoPago')->paginate(10);
+        return view('nota_ventas.index', compact('nota_ventas'));
     }
 
     public function create()
     {
-        $proveedores = Proveedor::all();
+        $clientes = Cliente::all();
         $productos = Producto::all();
-        return view('nota_salidas.form', compact('proveedores', 'productos'));
+        $tipos_pago = TipoPago::all();
+        return view('nota_ventas.form', compact('clientes', 'productos', 'tipos_pago'));
     }
 
     public function store(Request $request)
@@ -29,17 +31,17 @@ class NotaSalidaController extends Controller
         $request->validate([
             'fecha' => 'required|date',
             'monto' => 'required|numeric|min:0',
-            'descripcion' => 'required|string',
-            'proveedor_id' => 'required|exists:proveedors,id',
+            'cliente_id' => 'required|exists:clientes,id',
+            'tipo_pago_id' => 'required|exists:tipo_pagos,id',
             'productos' => 'required|array',
             'productos.*.producto_id' => 'required|exists:productos,id',
             'productos.*.cantidad' => 'required|integer|min:1',
-            'productos.*.precio_unitario' => 'required|numeric|min:0',
+            'productos.*.precio_venta' => 'required|numeric|min:0',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
-                // Validar stock antes de registrar
+                // Validar stock antes de descontar
                 foreach ($request->productos as $detalle) {
                     $producto = Producto::find($detalle['producto_id']);
                     if ($producto->stock < $detalle['cantidad']) {
@@ -47,22 +49,23 @@ class NotaSalidaController extends Controller
                     }
                 }
 
-                // Crear la nota de salida
-                $nota = NotaSalida::create([
+                // Crear la venta
+                $nota = NotaVenta::create([
                     'fecha' => $request->fecha,
                     'monto' => $request->monto,
-                    'descripcion' => $request->descripcion,
-                    'proveedor_id' => $request->proveedor_id,
+                    'cliente_id' => $request->cliente_id,
+                    'usuario_id' => auth()->id(),
+                    'tipo_pago_id' => $request->tipo_pago_id,
                 ]);
 
-                // Guardar detalle y disminuir stock
+                // Guardar detalles y actualizar stock
                 foreach ($request->productos as $detalle) {
-                    DetalleNotaSalida::create([
-                        'nota_salida_id' => $nota->id,
+                    DetalleVenta::create([
+                        'nota_venta_id' => $nota->id,
                         'producto_id' => $detalle['producto_id'],
                         'cantidad' => $detalle['cantidad'],
-                        'precio_unitario' => $detalle['precio_unitario'],
-                        'subtotal' => $detalle['cantidad'] * $detalle['precio_unitario'],
+                        'precio_venta' => $detalle['precio_venta'],
+                        'importe' => $detalle['cantidad'] * $detalle['precio_venta'],
                     ]);
 
                     $producto = Producto::find($detalle['producto_id']);
@@ -71,27 +74,27 @@ class NotaSalidaController extends Controller
                 }
             });
 
-            return redirect()->route('nota_salidas.index')->with('success', 'Nota de salida registrada con éxito.');
+            return redirect()->route('nota_ventas.index')->with('success', 'Venta registrada con éxito.');
+
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
     }
 
-
-    public function show(NotaSalida $nota_salida)
+    public function show(NotaVenta $nota_venta)
     {
-        $nota_salida->load(['proveedor', 'detalles.producto']);
-        return view('nota_salidas.show', compact('nota_salida'));
+        $nota_venta->load(['cliente', 'usuario', 'tipoPago', 'detalles.producto']);
+        return view('nota_ventas.show', compact('nota_venta'));
     }
 
-    public function destroy(NotaSalida $nota_salida)
+    public function destroy(NotaVenta $nota_venta)
     {
-        foreach ($nota_salida->detalles as $detalle) {
+        foreach ($nota_venta->detalles as $detalle) {
             $detalle->producto->increment('stock', $detalle->cantidad);
         }
 
-        $nota_salida->delete();
+        $nota_venta->delete();
 
-        return redirect()->route('nota_salidas.index')->with('success', 'Nota de salida eliminada con éxito.');
+        return redirect()->route('nota_ventas.index')->with('success', 'Venta eliminada con éxito.');
     }
 }
