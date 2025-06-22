@@ -19,8 +19,8 @@ class NotaSalidaController extends Controller
 
     public function create()
     {
-        $proveedores = Proveedor::all();
-        $productos = Producto::all();
+        $proveedores = \App\Models\Proveedor::all();
+        $productos = \App\Models\Producto::all();
         return view('nota_salidas.form', compact('proveedores', 'productos'));
     }
 
@@ -39,7 +39,7 @@ class NotaSalidaController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
-                // Validar stock antes de registrar
+                // Validar stock suficiente
                 foreach ($request->productos as $detalle) {
                     $producto = Producto::find($detalle['producto_id']);
                     if ($producto->stock < $detalle['cantidad']) {
@@ -47,7 +47,7 @@ class NotaSalidaController extends Controller
                     }
                 }
 
-                // Crear la nota de salida
+                // Crear nota de salida
                 $nota = NotaSalida::create([
                     'fecha' => $request->fecha,
                     'monto' => $request->monto,
@@ -55,7 +55,7 @@ class NotaSalidaController extends Controller
                     'proveedor_id' => $request->proveedor_id,
                 ]);
 
-                // Guardar detalle y disminuir stock
+                // Crear detalle y disminuir stock
                 foreach ($request->productos as $detalle) {
                     DetalleNotaSalida::create([
                         'nota_salida_id' => $nota->id,
@@ -72,11 +72,11 @@ class NotaSalidaController extends Controller
             });
 
             return redirect()->route('nota_salidas.index')->with('success', 'Nota de salida registrada con éxito.');
+
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
     }
-
 
     public function show(NotaSalida $nota_salida)
     {
@@ -86,11 +86,14 @@ class NotaSalidaController extends Controller
 
     public function destroy(NotaSalida $nota_salida)
     {
-        foreach ($nota_salida->detalles as $detalle) {
-            $detalle->producto->increment('stock', $detalle->cantidad);
-        }
+        DB::transaction(function () use ($nota_salida) {
+            // Devolver el stock
+            foreach ($nota_salida->detalles as $detalle) {
+                $detalle->producto->increment('stock', $detalle->cantidad);
+            }
 
-        $nota_salida->delete();
+            $nota_salida->delete();
+        });
 
         return redirect()->route('nota_salidas.index')->with('success', 'Nota de salida eliminada con éxito.');
     }

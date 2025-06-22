@@ -70,5 +70,8 @@ Route::resource('nota_salidas', NotaSalidaController::class)->middleware('auth')
 Route::resource('nota_ventas', NotaVentaController::class)->middleware('auth')->parameters([
     'nota_ventas' => 'nota_venta'
 ]);
+Route::get('dashboard/reporte', [App\Http\Controllers\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.reporte');
 
 require __DIR__.'/auth.php';

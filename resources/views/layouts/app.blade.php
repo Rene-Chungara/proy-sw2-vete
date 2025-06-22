@@ -33,7 +33,7 @@
 
             <nav class="p-4 space-y-2 flex-grow">
 
-                <a href="#" class="flex items-center p-3 rounded-lg text-white bg-cyan-600/50 font-semibold">
+                <a href="{{ route('dashboard.reporte') ?? '#' }}" class="flex items-center p-3 rounded-lg text-white bg-cyan-600/50 font-semibold">
                     <span class="material-symbols-outlined mr-3">dashboard</span>
                     Análisis
                 </a>
