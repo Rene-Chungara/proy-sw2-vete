@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ config('app.name', 'Laravel') }}</title>
-  @vite('resources/css/app.css')
-  @livewireStyles
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    @vite('resources/css/app.css')
+    @livewireStyles
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-100 font-inter antialiased">
 
@@ -13,43 +19,133 @@
         <!-- Sidebar Toggle Checkbox (Hidden) - Controls the mobile sidebar visibility -->
         <input id="menu-toggle" type="checkbox" class="hidden peer">
 
-        <!-- Sidebar -->
-        <aside class="bg-gradient-to-br from-blue-700 to-blue-900 text-white w-64 shadow-lg
-                      transform md:translate-x-0 fixed md:static inset-y-0 left-0 z-40
-                      transition-transform duration-300 ease-in-out -translate-x-full
-                      flex flex-col rounded-r-2xl md:rounded-none overflow-hidden">
-            <div class="p-6 text-2xl font-bold border-b border-blue-600 flex items-center justify-center">
-                <!-- Admin Panel Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                    <path fill-rule="evenodd" d="M11.078 14.122a.75.75 0 0 0-1.077-.077l-3.5 3.5a.75.75 0 0 0 1.06 1.06l3.5-3.5a.75.75 0 0 0-.076-1.078Z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm.75 6a.75.75 0 0 0 0 1.5H18a.75.75 0 0 0 0-1.5h-.75Zm-.75 9.75a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM12 9a.75.75 0 0 0 0 1.5h.008a.75.75 0 0 0 0-1.5H12ZM4.5 15.75a.75.75 0 0 0 1.5 0v-.75a.75.75 0 0 0-1.5 0v.75ZM6.75 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM.75 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5H.75ZM15 6.75a.75.75 0 0 0 0 1.5h.008a.75.75 0 0 0 0-1.5H15Zm0 12a.75.75 0 0 0 0 1.5h.008a.75.75 0 0 0 0-1.5H15Z" clip-rule="evenodd" />
-                </svg>
-                Admin Panel
+        <aside class="bg-gradient-to-br from-gray-900 to-gray-800 text-gray-300 w-64 shadow-2xl
+               transform md:translate-x-0 fixed md:static inset-y-0 left-0 z-40
+               transition-transform duration-300 ease-in-out -translate-x-full
+               flex flex-col rounded-r-2xl md:rounded-none overflow-y-auto">
+
+            <div class="p-6 text-2xl font-bold border-b border-gray-700 flex items-center justify-center space-x-3">
+                <span class="material-symbols-outlined text-3xl text-cyan-400">
+                    data_thresholding
+                </span>
+                <span class="text-white">Admin Panel</span>
             </div>
-            <nav class="p-6 space-y-3 flex-grow">
-                <a href="#" class="block p-3 rounded-xl hover:bg-blue-600 focus:bg-blue-600 focus:outline-none transition-colors duration-200 flex items-center">
-                    <!-- Dashboard Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59-5.117 8.25 8.25 0 0 1-14.59 5.117ZM12 7.5a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V8.25A.75.75 0 0 1 12 7.5Z" clip-rule="evenodd" />
-                    </svg>
-                    Dashboard
-                </a>
-                <!-- Update this href to your actual Laravel route -->
-                <a href="{{ route('users.index') ?? '#' }}" class="block p-3 rounded-xl hover:bg-blue-600 focus:bg-blue-600 focus:outline-none transition-colors duration-200 flex items-center">
-                    <!-- Usuarios Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 17.25a.75.75 0 0 1 .75-1.5h15.75a.75.75 0 0 1 .75.75v.75c0 1.95-1.571 3.525-3.513 3.593L15 21a2.25 2.25 0 0 1-4.5 0v-.087a3.525 3.525 0 0 0-1.053-.294 3.525 3.525 0 0 0-1.053.294v.087a2.25 2.25 0 0 1-4.5 0v-.087c-.93-.067-1.838-.283-2.652-.636A4.52 4.52 0 0 1 .75 19.5v-.75Zm0-1.5H2.25V19.5c0 .414.336.75.75.75h.396a.75.75 0 0 1-.001-1.5Z" clip-rule="evenodd" />
-                    </svg>
-                    Usuarios
-                </a>
-                <!-- Add more navigation items here -->
+
+            <nav class="p-4 space-y-2 flex-grow">
+
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">analytics</span>
+                            <span>Analisis</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('bi.dashboard') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">monitoring</span> Analisis BI
+                        </a>
+                        <a href="{{ route('bi.select') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">insights</span> Prediccion de Ventas
+                        </a>
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">storefront</span>
+                            <span>Ventas</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('nota_ventas.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">receipt_long</span> Ventas
+                        </a>
+                        <a href="{{ route('clientes.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">groups</span> Clientes
+                        </a>
+                        <a href="{{ route('tipo_pagos.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">payments</span> Formas de Pago
+                        </a>
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">inventory_2</span>
+                            <span>Inventario</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('productos.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">inventory</span> Productos
+                        </a>
+                        <a href="{{ route('categorias.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">category</span> Categorías
+                        </a>
+                        <a href="{{ route('almacenes.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">warehouse</span> Almacenes
+                        </a>
+                        <a href="{{ route('proveedores.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">local_shipping</span> Proveedores
+                        </a>
+                        <a href="{{ route('nota_entradas.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">input</span> Notas de Entrada
+                        </a>
+                        <a href="{{ route('nota_salidas.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">output</span> Notas de Salida
+                        </a>
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">admin_panel_settings</span>
+                            <span>Administración</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('users.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">manage_accounts</span> Usuarios
+                        </a>
+                        <a href="{{ route('empleados.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">badge</span> Empleados
+                        </a>
+                        <a href="{{ route('roles.index') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">shield_person</span> Roles y Permisos
+                        </a>
+                    </div>
+                </div>
+                
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">summarize</span>
+                            <span>Reportes</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('dashboard.reporte') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">bar_chart</span> Reporte de Ventas
+                        </a>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">monitoring</span> Reporte de Inventario
+                        </a>
+                    </div>
+                </div>
+
             </nav>
-            <div class="p-6 border-t border-blue-600 mt-auto">
-                <button id="logoutButton" class="block p-3 rounded-xl bg-blue-800 hover:bg-blue-700 transition-colors duration-200 text-center font-semibold flex items-center justify-center">
-                    <!-- Logout Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 16.5 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6ZM17.25 9a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1-.75-.75ZM15.75 12a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75ZM15.75 15a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-                    </svg>
+
+            <div class="p-4 border-t border-gray-700">
+                <button id="logoutButton" class="w-full flex items-center justify-center p-3 rounded-lg bg-gray-700/50 hover:bg-red-600/80 transition-colors duration-200">
+                    <span class="material-symbols-outlined mr-2">logout</span>
                     Salir
                 </button>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
@@ -113,7 +209,7 @@
                 <h4 class="text-xl font-semibold text-gray-900 mb-1">{{ Auth::user()->name }}</h4>
                 <p class="text-md text-gray-600 mb-4">{{ Auth::user()->email }}</p>
                 <div class="bg-blue-50 p-4 rounded-xl text-blue-800 text-sm">
-                    <p class="font-medium">Rol: {{ Auth::user()->role ?? 'Usuario' }}</p>
+                    <p class="font-medium">Rol: {{ Auth::user()->rol_id ?? 'Usuario' }}</p>
                     <p>Ultimo inicio de sesion: {{ Auth::user()->last_login_at ? Auth::user()->last_login_at->format('F j, Y, g:i a') : 'Primera vez' }}</p>
                 </div>
             </div>

@@ -23,7 +23,7 @@ class RoleController extends Controller
      }*/
     public function index()
     {
-        return view('rol.index', ['roles' => Role::all()]);
+        return view('rol.index', ['roles' => Role::paginate(10)]);
     }
 
     /**
@@ -32,22 +32,26 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all();
-        return view('rol.create', compact('permissions'));
+        return view('rol.form', compact('permissions'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $role = Role::create($request->all());
-        $role->syncPermissions($request->permissions);
-        $ip = request()->ip();
-        //activity()->useLog('Rol')->log('Nuevo')->subject($role);
+    public function store(Request $request){
+        $validated = $request->validate([
+            'name' => 'required|unique:roles,name',
+            'permissions' => 'array'
+        ]);
+        $role = Role::create(['name' => $validated['name']]);
+        $permissions = Permission::whereIn('id', $validated['permissions'] ?? [])
+                        ->pluck('name')
+                        ->toArray();
+        $role->syncPermissions($permissions);
         activity()
-            ->causedBy(auth()->user()) // El usuario responsable de la actividad
-            ->log('Se creo un nuevo rol: ' . $role->name . $ip);
-        return view("rol.message", ['msg' => "Guardado con Exito"]);
+            ->causedBy(auth()->user())
+            ->log('Se creó un nuevo rol: ' . $role->name . ' desde IP ' . request()->ip());
+        return redirect()->route('roles.index')->with('success', 'Rol creado con éxito.');
     }
 
     /**
@@ -64,23 +68,26 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        return view('rol.edit', compact('role', 'permissions'));
+        return view('rol.form', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
-    {
-        $role->update($request->all());
-        $role->syncPermissions($request->permissions);
-        $role->save();
-        $ip = request()->ip();
-        //activity()->useLog('Rol')->log('modificado')->subject($role);
+    public function update(Request $request, Role $role){
+        $validated = $request->validate([
+            'name' => 'required|unique:roles,name,' . $role->id,
+            'permissions' => 'array'
+        ]);
+        $role->update(['name' => $validated['name']]);
+        $permissions = Permission::whereIn('id', $validated['permissions'] ?? [])
+                        ->pluck('name')
+                        ->toArray();
+        $role->syncPermissions($permissions);
         activity()
-            ->causedBy(auth()->user()) // El usuario responsable de la actividad
-            ->log('Se actualizo un rol: ' . $role->name . $ip);
-        return redirect()->route('roles.index')->with('info', 'El rol se actualizó con exito');
+            ->causedBy(auth()->user())
+            ->log('Se actualizó el rol: ' . $role->name . ' desde IP ' . request()->ip());
+        return redirect()->route('roles.index')->with('success', 'Rol actualizado con éxito.');
     }
 
     /**
