@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\NotaEntradaController;
 use App\Http\Controllers\NotaSalidaController;
 use App\Http\Controllers\NotaVentaController;
+use App\Http\Controllers\PrediccionController;
 
 
 
@@ -73,5 +74,10 @@ Route::resource('nota_ventas', NotaVentaController::class)->middleware('auth')->
 Route::get('dashboard/reporte', [App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.reporte');
+Route::get('/bi-dashboard', [App\Http\Controllers\BiDashboardController::class, 'index'])->name('bi.dashboard');
+Route::post('/bi/actualizar', [\App\Http\Controllers\BiDashboardController::class, 'actualizar'])->name('bi.actualizar');
+
+Route::get('/bi/prediccion/{id}', [PrediccionController::class, 'mostrarPrediccion'])->name('bi.prediccion');
+Route::get('/bi/select', [PrediccionController::class, 'seleccionarProducto'])->name('bi.select');
 
 require __DIR__.'/auth.php';

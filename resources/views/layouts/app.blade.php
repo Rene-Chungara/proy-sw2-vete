@@ -33,10 +33,23 @@
 
             <nav class="p-4 space-y-2 flex-grow">
 
-                <a href="{{ route('dashboard.reporte') ?? '#' }}" class="flex items-center p-3 rounded-lg text-white bg-cyan-600/50 font-semibold">
-                    <span class="material-symbols-outlined mr-3">dashboard</span>
-                    Análisis
-                </a>
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined mr-3">analytics</span>
+                            <span>Analisis</span>
+                        </div>
+                        <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
+                    </button>
+                    <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
+                        <a href="{{ route('bi.dashboard') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">monitoring</span> Analisis BI
+                        </a>
+                        <a href="{{ route('bi.select') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">insights</span> Prediccion de Ventas
+                        </a>
+                    </div>
+                </div>
 
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
@@ -119,7 +132,7 @@
                         <span class="material-symbols-outlined transition-transform" :class="{'rotate-90': open}">chevron_right</span>
                     </button>
                     <div x-show="open" x-transition class="pl-6 pt-2 space-y-2">
-                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                        <a href="{{ route('dashboard.reporte') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
                             <span class="material-symbols-outlined mr-3 text-base">bar_chart</span> Reporte de Ventas
                         </a>
                         <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
