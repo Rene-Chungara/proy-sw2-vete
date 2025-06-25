@@ -53,12 +53,6 @@
                 <a href="{{ route('login') }}" class="font-semibold text-white px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 shadow-md transition-all duration-300 animate-fade-in-up animate-delay-1">
                     <span class="material-symbols-outlined align-middle text-lg mr-1">login</span> Iniciar Sesión
                 </a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center font-semibold text-gray-300 px-4 py-2 rounded-lg border border-gray-700 hover:border-blue-500 hover:bg-gray-700 transition-colors duration-300 animate-fade-in-up animate-delay-2">
-                        <span class="material-symbols-outlined align-middle text-lg mr-1">person_add</span> Registrarse
-                    </a>
-                @endif
             @endauth
         </div>
     </header>

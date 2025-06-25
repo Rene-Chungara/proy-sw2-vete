@@ -21,7 +21,7 @@ new #[Layout('layouts.guest')] class extends Component
         $this->validate([
             'termsAccepted' => ['required', 'accepted'],
         ], [
-            'termsAccepted.accepted' => 'Debes aceptar los términos y condiciones para iniciar sesión.',
+            'termsAccepted.required' => 'Debes aceptar los términos y condiciones para iniciar sesión.',
         ]);
 
         // Luego la validación de los campos del formulario
@@ -113,7 +113,7 @@ new #[Layout('layouts.guest')] class extends Component
                     <div class="ml-3">
                         <label for="terms" class="font-medium text-gray-700">
                             Acepto los 
-                            <a href="{{ route('terms.show') }}"" target="_blank" class="text-blue-600 hover:text-blue-500 transition-colors duration-200 underline">
+                            <a href="{{ route('terms.show') }}" target="_blank" class="text-blue-600 hover:text-blue-500 transition-colors duration-200 underline">
                                 Términos y Condiciones
                             </a>
                         </label>
@@ -134,13 +134,6 @@ new #[Layout('layouts.guest')] class extends Component
                     </button>
                 </div>
             </form>
-
-            <div class="text-center mt-6 text-sm text-gray-600 animate-delay-9">
-                ¿No tienes una cuenta? 
-                <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200" wire:navigate>
-                    Regístrate
-                </a>
-            </div>
         </div>
     </div>
 

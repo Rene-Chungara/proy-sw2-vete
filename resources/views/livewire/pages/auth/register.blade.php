@@ -26,7 +26,7 @@ new #[Layout('layouts.guest')] class extends Component
         $this->validate([
             'termsAccepted' => ['required', 'accepted'],
         ], [
-            'termsAccepted.accepted' => 'Debes aceptar los términos y condiciones para registrarte.',
+            'termsAccepted.required' => 'Debes aceptar los términos y condiciones para registrarte.',
         ]);
 
         // Luego la validación de los campos del formulario
@@ -37,7 +37,7 @@ new #[Layout('layouts.guest')] class extends Component
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-        $validated['rol_id'] = 1; // Asegúrate de que esto es lo que quieres por defecto
+        $validated['rol_id'] = 1; 
 
         event(new Registered($user = User::create($validated)));
 
@@ -131,7 +131,7 @@ new #[Layout('layouts.guest')] class extends Component
                     <div class="ml-3">
                         <label for="terms" class="font-medium text-gray-700">
                             Acepto los 
-                            <a href="{{ route('terms.show') }}"" target="_blank" class="text-green-600 hover:text-green-500 transition-colors duration-200 underline">
+                            <a href="{{ route('terms.show') }}" target="_blank" class="text-green-600 hover:text-green-500 transition-colors duration-200 underline">
                                 Términos y Condiciones
                             </a>
                         </label>
