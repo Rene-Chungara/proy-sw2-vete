@@ -30,7 +30,7 @@ use App\Http\Controllers\PrediccionController;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -79,5 +79,7 @@ Route::post('/bi/actualizar', [\App\Http\Controllers\BiDashboardController::clas
 
 Route::get('/bi/prediccion/{id}', [PrediccionController::class, 'mostrarPrediccion'])->name('bi.prediccion');
 Route::get('/bi/select', [PrediccionController::class, 'seleccionarProducto'])->name('bi.select');
+Route::view('/terminos-y-condiciones', 'legal.terminos')->name('terms.show');
+
 
 require __DIR__.'/auth.php';
