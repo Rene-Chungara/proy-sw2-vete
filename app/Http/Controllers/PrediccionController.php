@@ -19,8 +19,8 @@ class PrediccionController extends Controller
     public function mostrarPrediccion($id)
     {
         $producto = Producto::findOrFail($id);
-        //https://proy-micro-sw2-production.up.railway.app      //Link del backend
-        $response = Http::get('http://127.0.0.1:8001/api/prediccion', [
+
+        $response = Http::get('https://proy-micro-sw2-production.up.railway.app/api/prediccion', [
             'producto_id' => $id
         ]);
 

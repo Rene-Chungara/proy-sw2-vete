@@ -35,8 +35,8 @@ class BiDashboardController extends Controller
     // Llama al microservicio Python
     public function actualizar()
     {
-        try {      //https://proy-micro-sw2-production.up.railway.app //Link del backend
-            $response = Http::get('http://127.0.0.1:8001/api/bi/inventario');
+        try {
+            $response = Http::get('https://proy-micro-sw2-production.up.railway.app/api/bi/inventario');
             if ($response->successful()) {
                 return redirect()->route('bi.dashboard')->with('success', 'Datos actualizados correctamente.');
             } else {
