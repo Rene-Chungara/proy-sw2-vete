@@ -28,13 +28,13 @@
             </div>
         </div>
 
-        {{-- Stock vs EOQ Chart --}}
+        {{-- Stock vs ROP Chart --}}
         <div class="bg-white rounded-2xl shadow-md p-6">
             <h3 class="text-xl font-semibold text-center text-gray-700 mb-4">
-                Stock Actual vs Cantidad Óptima (EOQ)
+                Stock Actual vs Punto de Reorden (ROP)
             </h3>
             <div class="h-64">
-                <canvas id="stockEOQChart"></canvas>
+                <canvas id="stockROPChart"></canvas>
             </div>
         </div>
     </div>
@@ -199,16 +199,16 @@
         }
     });
 
-    // Gráfico de Comparación Stock vs EOQ
-    const stockEOQCtx = document.getElementById('stockEOQChart').getContext('2d');
+    // Gráfico de Comparación Stock vs ROP
+    const stockROPCtx = document.getElementById('stockROPChart').getContext('2d');
     const biData = @json($bi);
 
     const relevantProducts = biData.filter(item => item.stock > 0).slice(0, window.innerWidth < 640 ? 5 : 10);
     const productNames = relevantProducts.map(item => item.producto);
     const productStocks = relevantProducts.map(item => item.stock);
-    const productEOQs = relevantProducts.map(item => item.eoq);
+    const productROPs = relevantProducts.map(item => item.rop);
 
-    new Chart(stockEOQCtx, {
+    new Chart(stockROPCtx, {
         type: 'bar',
         data: {
             labels: productNames,
@@ -219,10 +219,10 @@
                 borderColor: 'rgba(59, 130, 246, 1)',
                 borderWidth: 1
             }, {
-                label: 'Cantidad Óptima a Pedir (EOQ)',
-                data: productEOQs,
-                backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                borderColor: 'rgba(16, 185, 129, 1)',
+                label: 'Punto de Reorden (ROP)',
+                data: productROPs,
+                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                borderColor: 'rgba(239, 68, 68, 1)',
                 borderWidth: 1
             }]
         },
