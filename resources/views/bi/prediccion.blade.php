@@ -92,7 +92,15 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: data.map(item => item.ds),
+                    labels: data.map(item => {
+                        // Convertir la fecha y extraer solo la parte de fecha (sin hora)
+                        const date = new Date(item.ds);
+                        return date.toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        });
+                    }),
                     datasets: [
                         {
                             label: 'Demanda esperada',
