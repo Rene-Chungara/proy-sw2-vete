@@ -28,13 +28,13 @@
             </div>
         </div>
 
-        {{-- Stock vs EOQ Chart --}}
+        {{-- Stock vs ROP Chart --}}
         <div class="bg-white rounded-2xl shadow-md p-6">
             <h3 class="text-xl font-semibold text-center text-gray-700 mb-4">
-                Stock Actual vs Cantidad Óptima (EOQ)
+                Stock Actual vs Punto de Reorden (ROP)
             </h3>
             <div class="h-64">
-                <canvas id="stockEOQChart"></canvas>
+                <canvas id="stockROPChart"></canvas>
             </div>
         </div>
     </div>
@@ -58,6 +58,19 @@
             </h3>
             <div class="h-64">
                 <canvas id="abcValueChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Tercera fila de gráficos --}}
+    <div class="grid grid-cols-1 gap-6 mb-10">
+        {{-- Stock vs EOQ Chart --}}
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h3 class="text-xl font-semibold text-center text-gray-700 mb-4">
+                Stock Actual vs Cantidad Económica de Pedido (EOQ)
+            </h3>
+            <div class="h-64">
+                <canvas id="stockEOQChart"></canvas>
             </div>
         </div>
     </div>
@@ -199,16 +212,22 @@
         }
     });
 
-    // Gráfico de Comparación Stock vs EOQ
-    const stockEOQCtx = document.getElementById('stockEOQChart').getContext('2d');
+    // Gráfico de Comparación Stock vs ROP
+    const stockROPCtx = document.getElementById('stockROPChart').getContext('2d');
     const biData = @json($bi);
 
-    const relevantProducts = biData.filter(item => item.stock > 0).slice(0, window.innerWidth < 640 ? 5 : 10);
-    const productNames = relevantProducts.map(item => item.producto);
+    const relevantProducts = biData.filter(item => item.stock > 0).slice(0, window.innerWidth < 640 ? 4 : 8);
+    const productNames = relevantProducts.map(item => {
+        // Truncar nombres largos y agregar "..." si es necesario
+        const maxLength = window.innerWidth < 640 ? 8 : 12;
+        return item.producto.length > maxLength ? 
+               item.producto.substring(0, maxLength) + '...' : 
+               item.producto;
+    });
     const productStocks = relevantProducts.map(item => item.stock);
-    const productEOQs = relevantProducts.map(item => item.eoq);
+    const productROPs = relevantProducts.map(item => item.rop);
 
-    new Chart(stockEOQCtx, {
+    new Chart(stockROPCtx, {
         type: 'bar',
         data: {
             labels: productNames,
@@ -219,10 +238,10 @@
                 borderColor: 'rgba(59, 130, 246, 1)',
                 borderWidth: 1
             }, {
-                label: 'Cantidad Óptima a Pedir (EOQ)',
-                data: productEOQs,
-                backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                borderColor: 'rgba(16, 185, 129, 1)',
+                label: 'Punto de Reorden (ROP)',
+                data: productROPs,
+                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                borderColor: 'rgba(239, 68, 68, 1)',
                 borderWidth: 1
             }]
         },
@@ -238,6 +257,49 @@
                             size: window.innerWidth < 640 ? 10 : 12
                         }
                     }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            // Mostrar el nombre completo en el tooltip
+                            const index = context[0].dataIndex;
+                            return relevantProducts[index].producto;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Unidades',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Productos',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 9 : 11
+                        },
+                        autoSkip: false, // No saltar etiquetas automáticamente
+                        maxRotation: 45, // Rotar etiquetas para mejor lectura
+                        minRotation: 45
+                    }
                 }
             }
         }
@@ -248,8 +310,14 @@
     // 1. Gráfico de Productos Cerca del ROP (Bar Chart)
     const ropProductsCtx = document.getElementById('ropProductsChart').getContext('2d');
 
-    const criticalProducts = biData.filter(item => item.stock <= item.rop * 1.2).slice(0, window.innerWidth < 640 ? 5 : 10);
-    const criticalProductNames = criticalProducts.map(item => item.producto);
+    const criticalProducts = biData.filter(item => item.stock <= item.rop * 1.2).slice(0, window.innerWidth < 640 ? 4 : 8);
+    const criticalProductNames = criticalProducts.map(item => {
+        // Truncar nombres largos y agregar "..." si es necesario
+        const maxLength = window.innerWidth < 640 ? 8 : 12;
+        return item.producto.length > maxLength ? 
+               item.producto.substring(0, maxLength) + '...' : 
+               item.producto;
+    });
     const criticalProductStocks = criticalProducts.map(item => item.stock);
     const criticalProductROPs = criticalProducts.map(item => item.rop);
 
@@ -285,6 +353,49 @@
                         font: {
                             size: window.innerWidth < 640 ? 10 : 12
                         }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            // Mostrar el nombre completo en el tooltip
+                            const index = context[0].dataIndex;
+                            return criticalProducts[index].producto;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Unidades',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Productos',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 9 : 11
+                        },
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45
                     }
                 }
             }
@@ -327,6 +438,116 @@
         options: {
             ...commonChartOptions,
             scales: {}
+        }
+    });
+
+    // 3. Gráfico de Stock vs EOQ (Bar Chart)
+    const stockEOQCtx = document.getElementById('stockEOQChart').getContext('2d');
+
+    const productsForEOQ = biData.filter(item => item.stock > 0 && item.eoq > 0).slice(0, window.innerWidth < 640 ? 6 : 12);
+    const eoqProductNames = productsForEOQ.map(item => {
+        // Truncar nombres largos y agregar "..." si es necesario
+        const maxLength = window.innerWidth < 640 ? 10 : 15;
+        return item.producto.length > maxLength ? 
+               item.producto.substring(0, maxLength) + '...' : 
+               item.producto;
+    });
+    const eoqProductStocks = productsForEOQ.map(item => item.stock);
+    const eoqProductEOQs = productsForEOQ.map(item => item.eoq);
+
+    new Chart(stockEOQCtx, {
+        type: 'bar',
+        data: {
+            labels: eoqProductNames,
+            datasets: [
+                {
+                    label: 'Stock Actual',
+                    data: eoqProductStocks,
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Cantidad Económica de Pedido (EOQ)',
+                    data: eoqProductEOQs,
+                    backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                    borderColor: 'rgba(139, 92, 246, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            ...commonChartOptions,
+            plugins: {
+                ...commonChartOptions.plugins,
+                legend: {
+                    position: 'top',
+                    labels: {
+                        boxWidth: 20,
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            // Mostrar el nombre completo en el tooltip
+                            const index = context[0].dataIndex;
+                            return productsForEOQ[index].producto;
+                        },
+                        afterLabel: function(context) {
+                            if (context.datasetIndex === 0) {
+                                const eoqValue = eoqProductEOQs[context.dataIndex];
+                                const stockValue = context.parsed.y;
+                                const difference = stockValue - eoqValue;
+                                if (difference > 0) {
+                                    return `Exceso: ${difference.toFixed(0)} unidades`;
+                                } else if (difference < 0) {
+                                    return `Déficit: ${Math.abs(difference).toFixed(0)} unidades`;
+                                } else {
+                                    return 'Cantidad óptima';
+                                }
+                            }
+                            return '';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Unidades',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Productos',
+                        font: {
+                            size: window.innerWidth < 640 ? 10 : 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 640 ? 9 : 11
+                        },
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            }
         }
     });
 
