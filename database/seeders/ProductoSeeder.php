@@ -32,6 +32,7 @@ class ProductoSeeder extends Seeder
                 'categoria_id' => $faker->randomElement($categoriaIds),
                 'almacen_id' => $faker->randomElement($almacenIds),
             ]);
+            
         }
     }
 }

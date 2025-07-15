@@ -48,6 +48,9 @@
                         <a href="{{ route('bi.select') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
                             <span class="material-symbols-outlined mr-3 text-base">insights</span> Prediccion de Ventas
                         </a>
+                        <a href="{{ route('bi.precio.producto') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">price_change</span> Sugerencia de precio
+                        </a>
                     </div>
                 </div>
 

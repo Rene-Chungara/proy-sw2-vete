@@ -14,7 +14,7 @@ class NotaVentaController extends Controller
 {
     public function index()
     {
-        $nota_ventas = NotaVenta::with('cliente', 'usuario', 'tipoPago')->paginate(10);
+        $nota_ventas = NotaVenta::with('cliente', 'usuario', 'tipoPago')->paginate(30);
         return view('nota_ventas.index', compact('nota_ventas'));
     }
 
