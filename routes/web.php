@@ -82,6 +82,8 @@ Route::get('/bi/select', [PrediccionController::class, 'seleccionarProducto'])->
 Route::view('/terminos-y-condiciones', 'legal.terminos')->name('terms.show');
 Route::get('/bi/recomendacion-compra/{id}', [PrediccionController::class, 'mostrarRecomendacionCompra'])->name('bi.recomendacion');
 Route::get('/bi/sugerencias-precio', [PrediccionController::class, 'mostrarSugerenciasPrecio'])->name('bi.precio.producto');
+Route::get('/bi/rotacion-productos', [PrediccionController::class, 'mostrarSegmentacionProductos'])->name('bi.rotacion.producto');
+Route::get('/bi/clasificacion-proveedores', [PrediccionController::class, 'mostrarClasificacionProveedores'])->name('bi.clasificacion.proveedor');
 
 
 require __DIR__.'/auth.php';

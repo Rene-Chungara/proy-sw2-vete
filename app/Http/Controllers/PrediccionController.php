@@ -66,4 +66,54 @@ class PrediccionController extends Controller
         ]);
     }
 
+    public function mostrarSegmentacionProductos(Request $request)
+    {
+        $response = Http::timeout(10)->get('http://localhost:3000/api/segmentacion-productos');
+
+        $productos = $response->successful()
+            ? collect($response->json() ?? [])
+            : collect();
+
+        if ($request->has('search')) {
+            $search = strtolower($request->input('search'));
+            $productos = $productos->filter(fn($p) => str_contains(strtolower($p['nombre']), $search))->values();
+        }
+
+        // Filtro por categoría
+        if ($request->filled('categoria')) {
+            $productos = $productos->where('categoria_rotacion', $request->input('categoria'))->values();
+        }
+
+        return view('bi.segmentacion_productos', [
+            'productos' => $productos,
+            'search' => $request->input('search'),
+            'categoria' => $request->input('categoria'),
+        ]);
+    }
+
+    public function mostrarClasificacionProveedores(Request $request)
+    {
+        $response = Http::timeout(10)->get('http://localhost:3000/api/clasificacion-proveedores');
+
+        $proveedores = $response->successful()
+            ? collect($response->json() ?? [])
+            : collect();
+
+        if ($request->has('search')) {
+            $search = strtolower($request->input('search'));
+            $proveedores = $proveedores->filter(fn($p) => str_contains(strtolower($p['nombre']), $search))->values();
+        }
+
+        // Filtro por desempeño
+        if ($request->filled('desempeno')) {
+            $proveedores = $proveedores->where('desempeno', $request->input('desempeno'))->values();
+        }
+
+        return view('bi.clasificacion_proveedores', [
+            'proveedores' => $proveedores,
+            'search' => $request->input('search'),
+            'desempeno' => $request->input('desempeno'),
+
+        ]);
+    }
 }

@@ -51,6 +51,12 @@
                         <a href="{{ route('bi.precio.producto') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
                             <span class="material-symbols-outlined mr-3 text-base">price_change</span> Sugerencia de precio
                         </a>
+                        <a href="{{ route('bi.rotacion.producto') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">segment</span> Segmentacion por Producto
+                        </a>
+                        <a href="{{ route('bi.clasificacion.proveedor') ?? '#' }}" class="flex items-center p-2 rounded-lg hover:bg-gray-700 text-sm">
+                            <span class="material-symbols-outlined mr-3 text-base">inbox_text_person</span> Clasificacion de Proveedores
+                        </a>
                     </div>
                 </div>
 
