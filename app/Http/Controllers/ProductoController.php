@@ -9,9 +9,32 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::with(['categoria', 'almacen'])->paginate(10);
+        $query = Producto::with(['categoria', 'almacen']);
+        
+        // Aplicar búsqueda si existe
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('codigo', 'LIKE', "%{$search}%")
+                  ->orWhere('descripcion', 'LIKE', "%{$search}%")
+                  ->orWhereHas('categoria', function($catQuery) use ($search) {
+                      $catQuery->where('nombre', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('almacen', function($almQuery) use ($search) {
+                      $almQuery->where('nombre', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Ordenar por ID descendente (más recientes primero)
+        $productos = $query->orderBy('id', 'asc')->paginate(10);
+
+        // Mantener los parámetros de búsqueda en la paginación
+        $productos->appends($request->query());
+        
         return view('productos.index', compact('productos'));
     }
 

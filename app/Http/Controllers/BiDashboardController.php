@@ -36,7 +36,7 @@ class BiDashboardController extends Controller
     public function actualizar()
     {
         try {
-            $response = Http::get('https://proy-micro-sw2-production.up.railway.app/api/bi/inventario');
+            $response = Http::get('http://localhost:3000/api/bi/inventario');
             if ($response->successful()) {
                 return redirect()->route('bi.dashboard')->with('success', 'Datos actualizados correctamente.');
             } else {

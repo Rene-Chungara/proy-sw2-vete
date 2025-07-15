@@ -20,7 +20,7 @@ class PrediccionController extends Controller
     {
         $producto = Producto::findOrFail($id);
 
-        $response = Http::get('https://proy-micro-sw2-production.up.railway.app/api/prediccion', [
+        $response = Http::get('http://localhost:3000/api/prediccion', [
             'producto_id' => $id
         ]);
 
