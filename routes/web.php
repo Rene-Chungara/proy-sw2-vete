@@ -80,6 +80,8 @@ Route::post('/bi/actualizar', [\App\Http\Controllers\BiDashboardController::clas
 Route::get('/bi/prediccion/{id}', [PrediccionController::class, 'mostrarPrediccion'])->name('bi.prediccion');
 Route::get('/bi/select', [PrediccionController::class, 'seleccionarProducto'])->name('bi.select');
 Route::view('/terminos-y-condiciones', 'legal.terminos')->name('terms.show');
+Route::get('/bi/recomendacion-compra/{id}', [PrediccionController::class, 'mostrarRecomendacionCompra'])->name('bi.recomendacion');
+Route::get('/bi/sugerencias-precio', [PrediccionController::class, 'mostrarSugerenciasPrecio'])->name('bi.precio.producto');
 
 
 require __DIR__.'/auth.php';
